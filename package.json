@@ -1,0 +1,33 @@
+{
+    "name": "aramask",
+    "version": "0.0.1",
+    "description": "",
+    "repository": "https://github.com/xuhcc/aramask",
+    "main": "index.js",
+    "scripts": {
+        "snap": "snap",
+        "start": "snap serve",
+        "watch": "snap watch",
+        "build": "snap build"
+    },
+    "web3Wallet": {
+        "bundle": {
+            "local": "dist/bundle.js",
+            "url": "http://localhost:8081/dist/bundle.js"
+        },
+        "initialPermissions": {
+            "alert": {},
+            "confirm": {},
+            "prompt": {},
+            "wallet_manageIdentities": {}
+        }
+    },
+    "dependencies": {
+        "@aragon/wrapper": "^5.0.0-rc.17",
+        "eth-json-rpc-errors": "^2.0.0",
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "snaps-cli": "^0.4.1"
+    }
+}

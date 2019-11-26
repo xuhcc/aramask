@@ -48,7 +48,7 @@ async function showAlert() {
 }
 
 async function add() {
-    const address = document.querySelector('input.address').value;
+    const address = document.querySelector('input.address').value.toLowerCase();
     console.log('adding account: ', address);
     const response = await ethereum.send({
         method: snapId,

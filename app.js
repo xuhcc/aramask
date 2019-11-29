@@ -5,12 +5,14 @@ const installButton = document.querySelector('button.install')
 const connectButton = document.querySelector('button.connect')
 const alertButton = document.querySelector('button.alert')
 const addButton = document.querySelector('button.add')
+const setActorButton = document.querySelector('button.set-actor')
 const sendButton = document.querySelector('button.send')
 
 installButton.addEventListener('click', install)
 connectButton.addEventListener('click', connect)
 alertButton.addEventListener('click', showAlert)
 addButton.addEventListener('click', add)
+setActorButton.addEventListener('click', setActor)
 sendButton.addEventListener('click', execute)
 
 async function install() {
@@ -48,7 +50,7 @@ async function showAlert() {
 }
 
 async function add() {
-    const address = document.querySelector('input.address').value.toLowerCase();
+    const address = document.querySelector('input.dao-address').value.toLowerCase();
     console.log('adding account: ', address);
     const response = await ethereum.send({
         method: snapId,
@@ -60,19 +62,40 @@ async function add() {
     console.log('added: ', response);
 }
 
+async function setActor() {
+    const accResponse = await ethereum.send({
+        method: 'eth_accounts',
+    })
+    console.log('accounts: ', accResponse);
+    const account = accResponse[0];
+    const actor = document.querySelector('input.actor-address').value.toLowerCase();
+    console.log('setting actor: ', actor);
+    const sendResponse = await ethereum.send({
+        method: snapId,
+        params: [{
+            method: 'setActor',
+            params: [ account, actor ],
+        }],
+    });
+    console.log('actor set: ', sendResponse);
+}
+
 async function execute() {
     const accResponse = await ethereum.send({
         method: 'eth_accounts',
     })
     console.log('accounts: ', accResponse);
-    const account = accResponse[0]
+    const account = accResponse[0];
     const value = 0;
+    const gasPrice = 0;
+    const to = '0x0000000000000000000000000000000000000000';
     const sendResponse = await ethereum.send({
-    method: 'eth_sendTransaction',
+        method: 'eth_sendTransaction',
         params: [{
             from: account,
             value: value.toString(16),
-            to: '0x0000000000000000000000000000000000000000',
+            gasPrice: gasPrice.toString(16),
+            to: to,
         }],
     });
     console.log('sent: ', sendResponse);

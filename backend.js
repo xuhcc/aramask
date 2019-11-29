@@ -5,11 +5,19 @@ const agent = require('./agent');
 
 const app = express();
 app.use(express.json());
-app.get('/path/', (request, response) => {
-    const data = request.params.data;
-    agent.calculatePath(data).then((tx) => {
+app.post('/path/', async (request, response) => {
+    console.log('request: ', request.body);
+    try {
+        const tx = await agent.calculatePath(
+            request.body.dao,
+            request.body.actor,
+            request.body.txParams,
+        );
         response.json({tx: tx});
-    });
+    } catch (error) {
+        console.error(error);
+        response.json({error: error.toString()});
+    }
 });
 
 const PORT = process.env.PORT || 8084;

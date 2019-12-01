@@ -1,4 +1,4 @@
-# Aramask
+# Aramask 🦅🦊
 
 Aragon account plugin for Metamask.
 

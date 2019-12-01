@@ -2,101 +2,104 @@ const origin = new URL('package.json', window.location.href).toString()
 const snapId = `wallet_plugin_${origin}`
 
 const installButton = document.querySelector('button.install')
-const connectButton = document.querySelector('button.connect')
-const alertButton = document.querySelector('button.alert')
 const addButton = document.querySelector('button.add')
+const connectButton = document.querySelector('button.connect')
 const setActorButton = document.querySelector('button.set-actor')
 const sendButton = document.querySelector('button.send')
 
 installButton.addEventListener('click', install)
+addButton.addEventListener('click', addAccount)
 connectButton.addEventListener('click', connect)
-alertButton.addEventListener('click', showAlert)
-addButton.addEventListener('click', add)
 setActorButton.addEventListener('click', setActor)
-sendButton.addEventListener('click', execute)
+sendButton.addEventListener('click', sendTransaction)
 
 async function install() {
-    console.log('install')
-    const response = await ethereum.send({
+    console.log('installing...')
+    await ethereum.send({
         method: 'wallet_requestPermissions',
         params: [{
             [snapId]: {},
             'eth_accounts': {},
         }],
     })
-    console.log('installed: ', response)
+    console.log('installed.')
 }
 
 async function connect() {
-    console.log('connect')
-    const response = await ethereum.send({
+    console.log('connecting to account...')
+    await ethereum.send({
         method: 'wallet_requestPermissions',
         params: [{
             'eth_accounts': {},
         }],
     })
-    console.log('connected: ', response)
+    console.log('connected.')
 }
 
-async function showAlert() {
-    console.log(`show alert ${snapId}`)
-    const response = await ethereum.send({
-        method: snapId,
-        params: [{
-            method: 'hello',
-        }],
-    })
-    console.log('alert showed: ', response)
-}
-
-async function add() {
-    const address = document.querySelector('input.dao-address').value.toLowerCase()
-    console.log('adding account: ', address)
+async function addAccount() {
+    const daoAddress = document.querySelector('input.dao-address').value.toLowerCase()
+    console.log('adding account: ', daoAddress)
     const response = await ethereum.send({
         method: snapId,
         params: [{
             method: 'addAccount',
-            params: [ address ],
+            params: [
+                daoAddress,
+            ],
         }],
     })
-    console.log('added: ', response)
+    if (response) {
+        console.log('account added.')
+    }
 }
 
 async function setActor() {
-    const accResponse = await ethereum.send({
+    const accounts = await ethereum.send({
         method: 'eth_accounts',
     })
-    console.log('accounts: ', accResponse)
-    const account = accResponse[0]
+    if (accounts.length === 0) {
+        console.log('no accounts available.')
+        return
+    }
+    const account = accounts[0]
     const actor = document.querySelector('input.actor-address').value.toLowerCase()
     console.log('setting actor: ', actor)
-    const sendResponse = await ethereum.send({
+    const response = await ethereum.send({
         method: snapId,
         params: [{
             method: 'setActor',
-            params: [ account, actor ],
+            params: [
+                account,
+                actor,
+            ],
         }],
     })
-    console.log('actor set: ', sendResponse)
+    if (response) {
+        console.log('actor set.')
+    }
 }
 
-async function execute() {
-    const accResponse = await ethereum.send({
+async function sendTransaction() {
+    const accounts = await ethereum.send({
         method: 'eth_accounts',
     })
-    console.log('accounts: ', accResponse)
-    const account = accResponse[0]
+    if (accounts.length === 0) {
+        console.log('no accounts available.')
+        return
+    }
+    const account = accounts[0]
+    console.log('sending transaction...')
     const value = 0
-    const gasPrice = 0
+    const gasPrice = 0 // Otherwise Metamask will show 'insufficient funds' error
     const to = '0x0000000000000000000000000000000000000000'
-    const sendResponse = await ethereum.send({
+    const response = await ethereum.send({
         method: 'eth_sendTransaction',
         params: [{
             from: account,
+            to: to,
             value: value.toString(16),
             gasPrice: gasPrice.toString(16),
-            to: to,
         }],
     })
-    console.log('sent: ', sendResponse)
+    console.log('sent: ', response)
 }

@@ -6,7 +6,7 @@ const agent = require('./agent')
 const app = express()
 app.use(express.json())
 app.post('/path/', async (request, response) => {
-    console.log('request: ', request.body)
+    console.log('Incoming request: ', request.body)
     try {
         const tx = await agent.calculatePath(
             request.body.dao,
@@ -23,5 +23,5 @@ app.post('/path/', async (request, response) => {
 const PORT = process.env.PORT || 8084
 
 app.listen(PORT, () => {
-    console.log(`running at http://localhost:${PORT}/`)
+    console.log(`Running at http://localhost:${PORT}/`)
 })

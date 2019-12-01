@@ -43,12 +43,12 @@ async function calculatePath(daoAddress, actorAddress, txParams) {
         },
     })
     await dao.init()
-    console.log(`successfully fetched DAO at ${daoAddress}`)
+    console.log(`Found DAO at ${daoAddress}`)
     const agentAddress = await getAgentAddress(dao)
-    console.log(`agent address is ${agentAddress}`)
+    console.log(`Agent address is ${agentAddress}`)
     const result = await dao.calculateTransactionPath(actorAddress, agentAddress, 'execute', txParams)
     const tx = result[0]
-    console.log('calculated: ', tx)
+    console.log('Calculated TX: ', tx)
     return tx
 }
 

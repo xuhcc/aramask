@@ -7,6 +7,7 @@
     "scripts": {
         "snap": "snap",
         "start": "snap serve",
+        "start:backend": "node backend.js",
         "watch": "snap watch",
         "build": "snap build"
     },
@@ -16,11 +17,9 @@
             "url": "http://localhost:8081/dist/bundle.js"
         },
         "initialPermissions": {
-            "alert": {},
-            "confirm": {},
-            "prompt": {},
             "eth_accounts": {},
-            "wallet_manageIdentities": {}
+            "wallet_manageIdentities": {},
+            "alert": {}
         }
     },
     "dependencies": {

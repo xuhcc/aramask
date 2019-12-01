@@ -23,5 +23,5 @@ app.post('/path/', async (request, response) => {
 const PORT = process.env.PORT || 8084
 
 app.listen(PORT, () => {
-    console.log(`Running at http://localhost:${PORT}/`)
+    console.log(`Backend service running on: http://localhost:${PORT}`)
 })

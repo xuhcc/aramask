@@ -1,15 +1,17 @@
 {
     "name": "aramask",
     "version": "0.0.1",
-    "description": "",
+    "license": "GPL-3.0-or-later",
+    "description": "Aragon account plugin for Metamask",
     "repository": "https://github.com/xuhcc/aramask",
     "main": "index.js",
     "scripts": {
         "snap": "snap",
-        "start": "snap serve",
+        "start:app": "snap serve",
         "start:backend": "node backend.js",
+        "start": "npm run start:backend & npm run start:app",
+        "build": "snap build --no-populate",
         "watch": "snap watch",
-        "build": "snap build",
         "lint": "eslint '*.js'"
     },
     "web3Wallet": {

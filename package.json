@@ -9,7 +9,8 @@
         "start": "snap serve",
         "start:backend": "node backend.js",
         "watch": "snap watch",
-        "build": "snap build"
+        "build": "snap build",
+        "lint": "eslint '*.js'"
     },
     "web3Wallet": {
         "bundle": {
@@ -28,6 +29,7 @@
         "express": "^4.17.1"
     },
     "devDependencies": {
+        "eslint": "^6.7.2",
         "snaps-cli": "^0.4.1"
     }
 }

@@ -45,6 +45,12 @@ wallet.registerAccountMessageHandler(async (originString, requestObject) => {
             if (!actor) {
                 throw new Error('Actor is not set');
             }
+            const allowedActors = await wallet.send({
+                method: 'eth_accounts',
+            });
+            if (allowedActors.indexOf(actor) === -1) {
+                throw new Error('Actor is not allowed.');
+            }
             const txParams = [txInfo.to, txInfo.value, txInfo.data];
             const payload = {
                 dao: account,
@@ -66,6 +72,7 @@ wallet.registerAccountMessageHandler(async (originString, requestObject) => {
                 return false;
             }
             const tx = result.tx;
+            tx.gas = tx.gas.toString(16);
             console.log('created tx: ', tx);
             const txResult = await wallet.send({
                 method: 'eth_sendTransaction',

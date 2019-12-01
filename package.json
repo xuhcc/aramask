@@ -19,6 +19,7 @@
             "alert": {},
             "confirm": {},
             "prompt": {},
+            "eth_accounts": {},
             "wallet_manageIdentities": {}
         }
     },

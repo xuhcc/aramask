@@ -2,7 +2,7 @@
     "name": "aramask",
     "version": "0.0.1",
     "license": "GPL-3.0-or-later",
-    "description": "Aragon account plugin for Metamask",
+    "description": "Aragon account Metamask plugin",
     "repository": "https://github.com/xuhcc/aramask",
     "main": "index.js",
     "scripts": {

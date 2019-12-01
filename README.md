@@ -1,6 +1,8 @@
 # Aramask 🦅🦊
 
-Aragon account plugin for Metamask.
+Aragon account Metamask plugin.
+
+With this [plugin](https://github.com/MetaMask/metamask-snaps-beta/wiki) you can use Metamask to interact with dapps on behalf of Aragon DAOs that have [Agent app](https://help.aragon.org/article/37-agent) installed.
 
 ## Usage
 

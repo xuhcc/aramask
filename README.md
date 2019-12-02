@@ -16,6 +16,8 @@ Current limitations:
 
 Clone the [metamask-snaps-beta](https://github.com/MetaMask/metamask-snaps-beta) repo.
 
+Switch to `AddIdentityApi` branch.
+
 Install required packages and build Metamask:
 
 ```

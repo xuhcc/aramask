@@ -54,7 +54,14 @@ async function sendTransaction(tx) {
     if (allowedActors.indexOf(actor) === -1) {
         throw new Error('Actor not allowed.')
     }
+    const chainId = await wallet.send({
+        method: 'net_version',
+    })
+    if (!chainId) {
+        throw new Error('Can not get chain ID.')
+    }
     const payload = {
+        chainId: chainId,
         dao: account,
         actor: actor,
         txParams: [tx.to, tx.value, tx.data],

@@ -2,17 +2,18 @@
 
 /*
  * Forward transaction to an agent and exit
- * Usage: ./test.js <dao-address> <actor-address> <to> <value> <data>
+ * Usage: ./test.js <chain-id> <dao-address> <actor-address> <to> <value> <data>
  */
 
 const agent = require('./agent')
 
 const args = process.argv
 
-const daoAddress = args[2]
-const actorAddress = args[3]
-const txParams = [args[4], args[5], args[6]]
+const chainId = args[2]
+const daoAddress = args[3]
+const actorAddress = args[4]
+const txParams = [args[5], args[6], args[7]]
 
-agent.calculatePath(daoAddress, actorAddress, txParams).then(() => {
+agent.calculatePath(chainId, daoAddress, actorAddress, txParams).then(() => {
     process.exit()
 })

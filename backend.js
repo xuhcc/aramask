@@ -9,6 +9,7 @@ app.post('/path/', async (request, response) => {
     console.log('Incoming request: ', request.body)
     try {
         const tx = await agent.calculatePath(
+            request.body.chainId,
             request.body.dao,
             request.body.actor,
             request.body.txParams,

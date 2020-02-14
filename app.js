@@ -39,7 +39,7 @@ async function connect() {
 
 async function addAccount() {
     const daoAddress = document.querySelector('input.dao-address').value.toLowerCase()
-    console.log('adding account: ', daoAddress)
+    console.log('looking for agent in dao: ', daoAddress)
     const response = await ethereum.send({
         method: 'wallet_invokePlugin',
         params: [snapId, {
@@ -50,7 +50,7 @@ async function addAccount() {
         }],
     })
     if (response) {
-        console.log('account added.')
+        console.log('account added: ', response)
     }
 }
 
@@ -91,7 +91,6 @@ async function sendTransaction() {
     const account = accounts[0]
     console.log('sending transaction...')
     const value = 0
-    const gasPrice = 0 // Otherwise Metamask will show 'insufficient funds' error
     const to = '0x0000000000000000000000000000000000000000'
     const response = await ethereum.send({
         method: 'eth_sendTransaction',
@@ -99,7 +98,6 @@ async function sendTransaction() {
             from: account,
             to: to,
             value: value.toString(16),
-            gasPrice: gasPrice.toString(16),
         }],
     })
     console.log('sent: ', response)

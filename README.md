@@ -20,7 +20,7 @@ Current limitations:
 
 Clone the [metamask-snaps-beta](https://github.com/MetaMask/metamask-snaps-beta) repo.
 
-Switch to `custom-accounts` branch.
+Switch to `custom-accounts` branch (tested with commit `09a539c1cb001f8f035b37007fa08bc7810c0e88`).
 
 Install required packages and build Metamask:
 

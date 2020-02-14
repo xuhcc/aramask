@@ -8,7 +8,8 @@ const ARAGON_ETH_PROVIDERS = {
 }
 const ARAGON_IPFS_GATEWAY = 'https://ipfs.eth.aragon.network/ipfs'
 const ENS_REGISTRIES = {
-    1: '0x314159265dd8dbb310642f98f50c066173c1259b',
+    // https://github.com/aragon/aragon/blob/master/arapp.json
+    1: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
     4: '0x98df287b6c145399aaa709692c8d308357bc085d',
 }
 const AGENT_APP_ID = namehash.hash('agent.aragonpm.eth')

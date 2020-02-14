@@ -14,26 +14,7 @@ const ENS_REGISTRIES = {
 }
 const AGENT_APP_ID = namehash.hash('agent.aragonpm.eth')
 
-function getAgentAddress(dao) {
-    return new Promise((resolve, reject) => {
-        const subscription = dao.apps.subscribe((apps) => {
-            subscription.unsubscribe()
-            for (let idx = 0; idx < apps.length; idx++) {
-                let app = apps[idx]
-                if (app.appId === AGENT_APP_ID) {
-                    resolve(app.proxyAddress)
-                    return
-                }
-            }
-            reject('agent not found')
-        })
-    })
-}
-
-async function calculatePath(chainId, daoAddress, actorAddress, txParams) {
-    /*
-     * txParams: [to, value, data]
-     */
+async function getDao(chainId, daoAddress) {
     const ethProvider = new Web3.providers.WebsocketProvider(
         process.env.ETHEREUM_URL || ARAGON_ETH_PROVIDERS[chainId],
     )
@@ -49,8 +30,39 @@ async function calculatePath(chainId, daoAddress, actorAddress, txParams) {
     })
     await dao.init()
     console.log(`Found DAO at ${daoAddress}`)
+    return dao
+}
+
+function getAgentAddress(dao) {
+    return new Promise((resolve, reject) => {
+        const subscription = dao.apps.subscribe((apps) => {
+            subscription.unsubscribe()
+            for (let idx = 0; idx < apps.length; idx++) {
+                let app = apps[idx]
+                if (app.appId === AGENT_APP_ID) {
+                    const agentAddress = app.proxyAddress
+                    console.log(`Agent address is ${agentAddress}`)
+                    resolve(agentAddress)
+                    return
+                }
+            }
+            reject('agent not found')
+        })
+    })
+}
+
+async function findAgent(chainId, daoAddress) {
+    const dao = await getDao(chainId, daoAddress)
     const agentAddress = await getAgentAddress(dao)
-    console.log(`Agent address is ${agentAddress}`)
+    return agentAddress
+}
+
+async function calculatePath(chainId, daoAddress, actorAddress, txParams) {
+    /*
+     * txParams: [to, value, data]
+     */
+    const dao = await getDao(chainId, daoAddress)
+    const agentAddress = await getAgentAddress(dao)
     // Forward transaction to an agent
     const result = await dao.calculateTransactionPath(actorAddress, agentAddress, 'execute', txParams)
     const tx = result[0]
@@ -58,4 +70,5 @@ async function calculatePath(chainId, daoAddress, actorAddress, txParams) {
     return tx
 }
 
+module.exports.findAgent = findAgent
 module.exports.calculatePath = calculatePath

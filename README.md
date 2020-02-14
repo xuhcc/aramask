@@ -1,8 +1,8 @@
 # Aramask 🦅🦊
 
-Aragon account Metamask plugin.
+Aragon account plugin for Metamask.
 
-With this [plugin](https://github.com/MetaMask/metamask-snaps-beta/wiki) you can use Metamask to interact with dapps on behalf of Aragon DAOs that have [Agent app](https://help.aragon.org/article/37-agent) installed.
+It allows DAO users to add a special contract account to their Metamask wallet and use it to manage [Aragon Agent](https://help.aragon.org/article/37-agent). It is based on a new [Metamask Plugin System](https://github.com/MetaMask/metamask-snaps-beta/wiki/Motivation).
 
 ## Usage
 
@@ -16,7 +16,7 @@ Current limitations:
 
 Clone the [metamask-snaps-beta](https://github.com/MetaMask/metamask-snaps-beta) repo.
 
-Switch to `AddIdentityApi` branch.
+Switch to `custom-accounts` branch.
 
 Install required packages and build Metamask:
 

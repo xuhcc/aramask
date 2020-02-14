@@ -1,5 +1,4 @@
-const origin = new URL('package.json', window.location.href).toString()
-const snapId = `wallet_plugin_${origin}`
+const snapId = new URL('package.json', window.location.href).toString()
 
 const installButton = document.querySelector('button.install')
 const addButton = document.querySelector('button.add')
@@ -16,9 +15,11 @@ sendButton.addEventListener('click', sendTransaction)
 async function install() {
     console.log('installing...')
     await ethereum.send({
-        method: 'wallet_requestPermissions',
+        method: 'wallet_enable',
         params: [{
-            [snapId]: {},
+            'wallet_plugin': {
+                [snapId]: {},
+            },
             'eth_accounts': {},
         }],
     })
@@ -28,7 +29,7 @@ async function install() {
 async function connect() {
     console.log('connecting to account...')
     await ethereum.send({
-        method: 'wallet_requestPermissions',
+        method: 'wallet_enable',
         params: [{
             'eth_accounts': {},
         }],
@@ -40,8 +41,8 @@ async function addAccount() {
     const daoAddress = document.querySelector('input.dao-address').value.toLowerCase()
     console.log('adding account: ', daoAddress)
     const response = await ethereum.send({
-        method: snapId,
-        params: [{
+        method: 'wallet_invokePlugin',
+        params: [snapId, {
             method: 'addAccount',
             params: [
                 daoAddress,
@@ -65,8 +66,8 @@ async function setActor() {
     const actor = document.querySelector('input.actor-address').value.toLowerCase()
     console.log('setting actor: ', actor)
     const response = await ethereum.send({
-        method: snapId,
-        params: [{
+        method: 'wallet_invokePlugin',
+        params: [snapId, {
             method: 'setActor',
             params: [
                 account,

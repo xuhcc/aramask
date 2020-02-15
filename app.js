@@ -1,13 +1,13 @@
 const snapId = new URL('package.json', window.location.href).toString()
 
 const installButton = document.querySelector('button.install')
-const addButton = document.querySelector('button.add')
+const addAccountButton = document.querySelector('button.add-account')
 const connectButton = document.querySelector('button.connect')
 const setActorButton = document.querySelector('button.set-actor')
 const sendButton = document.querySelector('button.send')
 
 installButton.addEventListener('click', install)
-addButton.addEventListener('click', addAccount)
+addAccountButton.addEventListener('click', addAccount)
 connectButton.addEventListener('click', connect)
 setActorButton.addEventListener('click', setActor)
 sendButton.addEventListener('click', sendTransaction)
@@ -40,18 +40,28 @@ async function connect() {
 async function addAccount() {
     const daoAddress = document.querySelector('input.dao-address').value.toLowerCase()
     console.log('looking for agent in dao: ', daoAddress)
-    const response = await ethereum.send({
-        method: 'wallet_invokePlugin',
-        params: [snapId, {
-            method: 'addAccount',
-            params: [
-                daoAddress,
-            ],
-        }],
-    })
-    if (response) {
-        console.log('account added: ', response)
+    const statusBox = document.querySelector('.add-account-status')
+    statusBox.textContent = 'please wait...'
+    statusBox.style.color = 'green'
+    let account
+    try {
+        account = await ethereum.send({
+            method: 'wallet_invokePlugin',
+            params: [snapId, {
+                method: 'addAccount',
+                params: [
+                    daoAddress,
+                ],
+            }],
+        })
+    } catch (error) {
+        statusBox.textContent = error.message
+        statusBox.style.color = 'red'
+        console.error(error)
+        return
     }
+    statusBox.textContent = `account added: ${account}`
+    console.log('account added: ', account)
 }
 
 async function setActor() {
@@ -59,25 +69,33 @@ async function setActor() {
         method: 'eth_accounts',
     })
     if (accounts.length === 0) {
-        console.log('no accounts available.')
+        alert('no accounts available.')
         return
     }
     const account = accounts[0]
     const actor = document.querySelector('input.actor-address').value.toLowerCase()
     console.log('setting actor: ', actor)
-    const response = await ethereum.send({
-        method: 'wallet_invokePlugin',
-        params: [snapId, {
-            method: 'setActor',
-            params: [
-                account,
-                actor,
-            ],
-        }],
-    })
-    if (response) {
-        console.log('actor set.')
+    const statusBox = document.querySelector('.set-actor-status')
+    try {
+        await ethereum.send({
+            method: 'wallet_invokePlugin',
+            params: [snapId, {
+                method: 'setActor',
+                params: [
+                    account,
+                    actor,
+                ],
+            }],
+        })
+    } catch (error) {
+        statusBox.textContent = error.message
+        statusBox.style.color = 'red'
+        console.error(error)
+        return
     }
+    statusBox.textContent = `done.`
+    statusBox.style.color = 'green'
+    console.log('actor set.')
 }
 
 async function sendTransaction() {
@@ -85,7 +103,7 @@ async function sendTransaction() {
         method: 'eth_accounts',
     })
     if (accounts.length === 0) {
-        console.log('no accounts available.')
+        alert('no accounts available.')
         return
     }
     const account = accounts[0]

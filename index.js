@@ -7,12 +7,11 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         case 'addAccount':
             return await addAccount(requestObject.params[0])
         case 'setActor':
-            setActor(...requestObject.params)
-            break
+            await setActor(...requestObject.params)
+            return true
         default:
             throw new Error('Method not found.')
     }
-    return true
 })
 
 async function getChainId() {
@@ -61,7 +60,13 @@ async function addAccount(daoAddress) {
     return agentAddress
 }
 
-function setActor(account, actor) {
+async function setActor(account, actor) {
+    const allowedActors = await wallet.send({
+        method: 'eth_accounts',
+    })
+    if (allowedActors.indexOf(actor) === -1) {
+        throw new Error('Account not found.')
+    }
     accounts[account].actor = actor
 }
 
@@ -81,12 +86,6 @@ async function sendTransaction(tx) {
     const {dao, actor} = accounts[account]
     if (!actor) {
         throw new Error('Actor not set for current account.')
-    }
-    const allowedActors = await wallet.send({
-        method: 'eth_accounts',
-    })
-    if (allowedActors.indexOf(actor) === -1) {
-        throw new Error('Actor not allowed.')
     }
     const chainId = await getChainId()
     const payload = {

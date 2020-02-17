@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:8084'
+const BACKEND_URL = 'http://localhost:8082'
 
 const accounts = {}
 
@@ -73,12 +73,10 @@ async function setActor(account, actor) {
 wallet.registerAccountMessageHandler(async (originString, requestObject) => {
     switch (requestObject.method) {
         case 'eth_signTransaction':
-            await sendTransaction(requestObject.params[0])
-            break
+            return await sendTransaction(requestObject.params[0])
         default:
             throw Error('Method not supported.')
     }
-    return true
 })
 
 async function sendTransaction(tx) {
@@ -94,13 +92,13 @@ async function sendTransaction(tx) {
         actor: actor,
         txParams: [tx.to, tx.value, tx.data],
     }
-    const result = await callBackend('path', payload)
-    const newTx = result.tx
-    newTx.gas = newTx.gas.toString(16)
-    console.log('sending transaction: ', newTx)
-    const txId = await wallet.send({
+    const { wrappedTx } = await callBackend('path', payload)
+    wrappedTx.gas = wrappedTx.gas.toString(16)
+    console.log('sending transaction: ', wrappedTx)
+    const wrappedTxId = await wallet.send({
         method: 'eth_sendTransaction',
-        params: [newTx],
+        params: [wrappedTx],
     })
-    console.log('transaction ID: ', txId)
+    console.log('transaction ID: ', wrappedTxId)
+    return wrappedTxId
 }

@@ -10,11 +10,12 @@ Current limitations:
 
 - Needs [experimental version](https://github.com/MetaMask/metamask-snaps-beta) of Metamask.
 - Needs backend service to construct Agent transactions.
-- Metamask will [display agent contract address](https://github.com/xuhcc/aramask/issues/2) in its account list instead of DAO address.
+- Metamask will [display agent's contract address](https://github.com/xuhcc/aramask/issues/2) in its account list instead of DAO address.
 - Every transaction requires two confirmations from the user.
 - Successful transactions will be [marked as failed](https://github.com/xuhcc/aramask/issues/3) in transaction list of Aragon account.
 - Transaction may [randomly fail](https://github.com/xuhcc/aramask/issues/1) with error `No functions specified in artifact for 0x...`.
 - Works only in Chrome/Chromium.
+- Agent account will not be preserved after browser restart.
 
 ### Metamask installation
 

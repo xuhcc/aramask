@@ -2,7 +2,7 @@
 
 /*
  * Forward transaction to an agent and exit
- * Usage: ./test.js <chain-id> <dao-address> <actor-address> <to> <value> <data>
+ * Usage: ./agent-cli.js <chain-id> <dao-address> <actor-address> <to> <value> <data>
  */
 
 const agent = require('./agent')

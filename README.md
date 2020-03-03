@@ -9,11 +9,11 @@ It allows DAO users to add a special contract account to their Metamask wallet a
 Current limitations:
 
 - **Needs [experimental version](https://github.com/MetaMask/metamask-snaps-beta) of Metamask.**
+- Which works only in Chrome/Chromium and Brave *(Note that in Brave you may have to disable default Crypto Wallet in order to use Metamask)*.
 - Needs backend service to construct Agent transactions.
 - Metamask will [display agent's contract address](https://github.com/xuhcc/aramask/issues/2) in its account list instead of DAO address.
 - Every transaction requires two confirmations from the user.
 - Successful transactions will be [marked as failed](https://github.com/xuhcc/aramask/issues/3) in transaction list of Aragon account.
-- Works only in Chrome/Chromium.
 - Agent account will not be preserved after browser restart.
 
 ### Metamask installation

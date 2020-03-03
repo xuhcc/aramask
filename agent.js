@@ -1,4 +1,4 @@
-const Aragon = require('@aragon/wrapper').default
+const { default: Aragon, ensResolve } = require('@aragon/wrapper')
 const Web3 = require('web3')
 const namehash = require('eth-ens-namehash')
 
@@ -14,18 +14,34 @@ const ENS_REGISTRIES = {
 }
 const AGENT_APP_ID = namehash.hash('agent.aragonpm.eth')
 
-async function getDao(chainId, daoAddress) {
+async function getDao(chainId, daoName) {
     const ethProvider = new Web3.providers.WebsocketProvider(
         process.env.ETHEREUM_URL || ARAGON_ETH_PROVIDERS[chainId],
     )
     const ipfsGatewayUrl = process.env.IPFS_GATEWAY_URL || ARAGON_IPFS_GATEWAY
+    const ensRegistryAddress = ENS_REGISTRIES[chainId]
+
+    let daoAddress
+    if (daoName.startsWith('0x') && daoName.length === 42) {
+        daoAddress = daoName
+    } else {
+        if (!daoName.endsWith('.eth')) {
+            daoName += '.aragonid.eth'
+        }
+        daoAddress = await ensResolve(daoName, {
+            provider: ethProvider,
+            registryAddress: ensRegistryAddress,
+        })
+        console.log(`Resolved ${daoName} to ${daoAddress}`)
+    }
+
     const dao = new Aragon(daoAddress, {
         provider: ethProvider,
         apm: {
             ipfs: {
                 gateway: ipfsGatewayUrl,
             },
-            ensRegistryAddress: ENS_REGISTRIES[chainId],
+            ensRegistryAddress,
         },
     })
     await dao.init()
@@ -51,10 +67,13 @@ function getAgentAddress(dao) {
     })
 }
 
-async function findAgent(chainId, daoAddress) {
-    const dao = await getDao(chainId, daoAddress)
+async function findAgent(chainId, daoName) {
+    const dao = await getDao(chainId, daoName)
     const agentAddress = await getAgentAddress(dao)
-    return agentAddress
+    return {
+        daoAddress: dao.kernelProxy.address,
+        agentAddress,
+    }
 }
 
 async function calculatePath(chainId, daoAddress, actorAddress, txParams) {

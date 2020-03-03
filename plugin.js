@@ -42,13 +42,13 @@ async function callBackend(endpoint, payload) {
     return result
 }
 
-async function addAccount(daoAddress) {
+async function addAccount(daoName) {
     const chainId = await getChainId()
     const payload = {
         chainId: chainId,
-        dao: daoAddress,
+        daoName: daoName,
     }
-    const { agentAddress } = await callBackend('agent', payload)
+    const { daoAddress, agentAddress } = await callBackend('agent', payload)
     await wallet.send({
         method: 'wallet_manageIdentities',
         params: [

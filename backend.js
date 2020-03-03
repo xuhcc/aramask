@@ -15,9 +15,9 @@ app.use(express.json())
 app.post('/agent/', async (request, response) => {
     console.log('Incoming request: ', request.body)
     try {
-        const {chainId, dao} = request.body
-        const agentAddress = await agent.findAgent(chainId, dao)
-        response.json({ agentAddress })
+        const {chainId, daoName} = request.body
+        const result = await agent.findAgent(chainId, daoName)
+        response.json(result)
     } catch (error) {
         console.error(error)
         response.json({error: error.toString()})

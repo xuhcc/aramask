@@ -8,7 +8,7 @@ It allows DAO users to add a special contract account to their Metamask wallet a
 
 Current limitations:
 
-- Needs [experimental version](https://github.com/MetaMask/metamask-snaps-beta) of Metamask.
+- **Needs [experimental version](https://github.com/MetaMask/metamask-snaps-beta) of Metamask.**
 - Needs backend service to construct Agent transactions.
 - Metamask will [display agent's contract address](https://github.com/xuhcc/aramask/issues/2) in its account list instead of DAO address.
 - Every transaction requires two confirmations from the user.

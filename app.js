@@ -38,8 +38,8 @@ async function connect() {
 }
 
 async function addAccount() {
-    const daoAddress = document.querySelector('input.dao-address').value.toLowerCase()
-    console.log('looking for agent in dao: ', daoAddress)
+    const daoName = document.querySelector('input.dao-name').value.toLowerCase()
+    console.log('looking for agent in dao: ', daoName)
     const statusBox = document.querySelector('.add-account-status')
     statusBox.textContent = 'please wait...'
     statusBox.style.color = 'green'
@@ -50,7 +50,7 @@ async function addAccount() {
             params: [snapId, {
                 method: 'addAccount',
                 params: [
-                    daoAddress,
+                    daoName,
                 ],
             }],
         })
